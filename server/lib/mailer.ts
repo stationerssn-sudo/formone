@@ -1,0 +1,17 @@
+import nodemailer from 'nodemailer'
+
+export const mailer = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT ?? 587),
+  secure: process.env.SMTP_SECURE === 'true',
+  auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD },
+})
+
+export function isSmtpConfigured() {
+  return Boolean(
+    process.env.SMTP_HOST &&
+      process.env.SMTP_USER &&
+      process.env.SMTP_PASSWORD &&
+      process.env.SMTP_HOST !== 'smtp.example.com',
+  )
+}
