@@ -52,6 +52,10 @@ export function RegisterModal({ onClose, onSwitchToLogin }: RegisterModalProps) 
           </select>
         </label>
         <label>
+          Namba ya simu
+          <input name="phone" required type="tel" placeholder="0712 345 678" pattern="(0|\\+?255)[0-9]{9}" title="Mfano: 0712 345 678" />
+        </label>
+        <label>
           Barua pepe
           <input name="email" required type="email" placeholder="juma@example.com" />
         </label>

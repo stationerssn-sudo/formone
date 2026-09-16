@@ -49,19 +49,27 @@ authRouter.post('/api/auth/login', async (request, response) => {
 authRouter.post('/api/auth/register', async (request, response) => {
   const fullName = String(request.body.full_name ?? '').trim()
   const position = String(request.body.position ?? '').trim()
+  const phone = normalizePhone(String(request.body.phone ?? ''))
   const email = String(request.body.email ?? '').trim().toLowerCase()
   const password = String(request.body.password ?? '')
 
-  if (!fullName || !['Academic', 'Mhasibu', 'Mwalimu', 'Treasurer'].includes(position) || !email || password.length < 8) {
-    response.status(400).json({ message: 'Jaza taarifa zote; nenosiri liwe na angalau herufi 8.' })
+  if (
+    !fullName ||
+    !['Academic', 'Mhasibu', 'Mwalimu', 'Treasurer'].includes(position) ||
+    !phone ||
+    !/^(0|\+?255)?[0-9]{9}$/.test(phone) ||
+    !email ||
+    password.length < 8
+  ) {
+    response.status(400).json({ message: 'Jaza taarifa zote kwa usahihi; nenosiri liwe na angalau herufi 8.' })
     return
   }
 
   try {
     const passwordHash = await bcrypt.hash(password, 12)
     const [result] = await pool.execute(
-      'INSERT INTO users (full_name, position, email, password) VALUES (?, ?, ?, ?)',
-      [fullName, position, email, passwordHash],
+      'INSERT INTO users (full_name, position, phone, email, password) VALUES (?, ?, ?, ?, ?)',
+      [fullName, position, phone, email, passwordHash],
     )
     const userId = (result as { insertId: number }).insertId
     response.status(201).json({
