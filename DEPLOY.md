@@ -52,19 +52,19 @@ Kwenye https://vercel.com/new, pakia **folder `dist`** pekee.
 
 Nenda **Settings → Environment Variables** (chagua Production, Preview na Development) ongeza zifuatazo:
 
-| Jina | Thamani |
-|------|---------|
-| `DB_HOST` | Host ya database yako (mfano host ya Aiven/PlanetScale/hosting yako) |
-| `DB_PORT` | `3306` |
-| `DB_USER` | Jina la mtumiaji wa database |
-| `DB_PASSWORD` | Nenosiri la database |
-| `DB_NAME` | Jina la database |
+| Jina            | Thamani                                                                                                |
+| --------------- | ------------------------------------------------------------------------------------------------------ |
+| `DB_HOST`       | Host ya database yako (mfano host ya Aiven/PlanetScale/hosting yako)                                   |
+| `DB_PORT`       | `3306`                                                                                                 |
+| `DB_USER`       | Jina la mtumiaji wa database                                                                           |
+| `DB_PASSWORD`   | Nenosiri la database                                                                                   |
+| `DB_NAME`       | Jina la database                                                                                       |
 | `CLIENT_ORIGIN` | `https://elimubora.vercel.app` (au domain yako ya production; ongeza na comma kama kuna zaidi ya moja) |
-| `SMTP_HOST` | Host ya email server (mfano `smtp.gmail.com`) |
-| `SMTP_PORT` | `587` |
-| `SMTP_USER` | Barua pepe ya kutuma |
-| `SMTP_PASSWORD` | Nenosiri la barua pepe (kwa Gmail tumia **App Password**, siyo nenosiri la kawaida) |
-| `SMTP_FROM` | Barua pepe inayoonekana kama mtumaji (mfano `ElimuBora <noreply@elimubora.app>`) |
+| `SMTP_HOST`     | Host ya email server (mfano `smtp.gmail.com`)                                                          |
+| `SMTP_PORT`     | `587`                                                                                                  |
+| `SMTP_USER`     | Barua pepe ya kutuma                                                                                   |
+| `SMTP_PASSWORD` | Nenosiri la barua pepe (kwa Gmail tumia **App Password**, siyo nenosiri la kawaida)                    |
+| `SMTP_FROM`     | Barua pepe inayoonekana kama mtumaji (mfano `ElimuBora <noreply@elimubora.app>`)                       |
 
 ## 4. Domain
 
