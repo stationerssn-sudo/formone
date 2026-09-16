@@ -42,7 +42,7 @@ export function LandingPage({ onLoggedIn }: LandingPageProps) {
   return (
     <div className="site-shell">
       <header className="topbar">
-        <Brand />
+        <Brand useInstitution={false} />
         <div className="top-actions">
           <div className="language-switch">
             <button
@@ -108,7 +108,7 @@ export function LandingPage({ onLoggedIn }: LandingPageProps) {
           </div>
         </section>
       </main>
-      <Footer />
+      <Footer useInstitution={false} />
       {isLoginOpen && (
         <LoginModal
           onClose={() => setIsLoginOpen(false)}

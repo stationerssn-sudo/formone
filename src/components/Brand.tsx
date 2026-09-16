@@ -2,6 +2,8 @@ import { useInstitutionName } from '../lib/useInstitutionName'
 
 type BrandProps = {
   href?: string
+  /** Kama `false`, inaonyesha jina la kawaida (ElimuBora) — inatumika kwenye landing page. */
+  useInstitution?: boolean
 }
 
 function getInitials(name: string): string {
@@ -16,8 +18,8 @@ function getInitials(name: string): string {
   return name.slice(0, 2).toUpperCase()
 }
 
-export function Brand({ href = '#top' }: BrandProps) {
-  const name = useInstitutionName()
+export function Brand({ href = '#top', useInstitution = true }: BrandProps) {
+  const name = useInstitutionName(useInstitution)
   return (
     <a className="brand" href={href}>
       <span className="brand-mark">{getInitials(name)}</span>
