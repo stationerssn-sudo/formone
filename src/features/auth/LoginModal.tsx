@@ -8,14 +8,12 @@ type LoginModalProps = {
   onClose: () => void;
   onLoggedIn: (user: User) => void;
   onForgotPassword: () => void;
-  onSwitchToRegister: () => void;
 };
 
 export function LoginModal({
   onClose,
   onLoggedIn,
   onForgotPassword,
-  onSwitchToRegister,
 }: LoginModalProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [loginMessage, setLoginMessage] = useState("");

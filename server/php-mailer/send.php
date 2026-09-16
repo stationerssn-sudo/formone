@@ -19,15 +19,15 @@ header('Content-Type: application/json');
 // ⚠️ BADILISHA hii na siri ndefu (herufi 32+) — lazima ifanane na MAILER_SECRET kwenye Node .env
 $SECRET_KEY = 'change-this-secret';
 
-// Tuma kutoka kwa mailbox hii ya cPanel (badilisha kama inahitaji)
-$FROM_EMAIL = 'ask@mcadventist.org';
+// Tuma kutoka kwa mailbox hii ya cPanel
+$FROM_EMAIL = 'session@mcadventist.org';
 $FROM_NAME  = 'ElimuBora';
 
-// SMTP ya hosting — kwa cPanel kwa kawaida ni host yako, mailbox na password yake
+// SMTP ya hosting — 587 = STARTTLS
 $SMTP_HOST = 'mail.mcadventist.org';
-$SMTP_PORT = 465;             // 465 = SSL, 587 = STARTTLS
-$SMTP_USER = 'ask@mcadventist.org';
-$SMTP_PASS = 'Musoma@2016!';  // ⚠️ weka password sahi ya mailbox kwenye cPanel
+$SMTP_PORT = 587;             // 587 = STARTTLS, 465 = SSL
+$SMTP_USER = 'session@mcadventist.org';
+$SMTP_PASS = 'Session2025';
 
 $input = json_decode(file_get_contents('php://input'), true);
 
@@ -62,7 +62,7 @@ try {
     $mail->SMTPAuth   = true;
     $mail->Username   = $SMTP_USER;
     $mail->Password   = $SMTP_PASS;
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // port 465
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // port 587
     $mail->Port       = $SMTP_PORT;
     $mail->CharSet    = 'UTF-8';
 

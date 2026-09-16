@@ -115,10 +115,6 @@ export function LandingPage({ onLoggedIn }: LandingPageProps) {
             setIsLoginOpen(false);
             setIsResetOpen(true);
           }}
-          onSwitchToRegister={() => {
-            setIsLoginOpen(false);
-            setIsRegisterOpen(true);
-          }}
         />
       )}
       {isResetOpen && (
