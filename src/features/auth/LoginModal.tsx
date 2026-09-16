@@ -1,15 +1,15 @@
-import { useState } from 'react'
-import { Modal } from '../../components/Modal'
-import { apiPost } from '../../lib/api'
-import { saveSession } from '../../lib/session'
-import type { User } from '../../types'
+import { useState } from "react";
+import { Modal } from "../../components/Modal";
+import { apiPost } from "../../lib/api";
+import { saveSession } from "../../lib/session";
+import type { User } from "../../types";
 
 type LoginModalProps = {
-  onClose: () => void
-  onLoggedIn: (user: User) => void
-  onForgotPassword: () => void
-  onSwitchToRegister: () => void
-}
+  onClose: () => void;
+  onLoggedIn: (user: User) => void;
+  onForgotPassword: () => void;
+  onSwitchToRegister: () => void;
+};
 
 export function LoginModal({
   onClose,
@@ -17,30 +17,30 @@ export function LoginModal({
   onForgotPassword,
   onSwitchToRegister,
 }: LoginModalProps) {
-  const [showPassword, setShowPassword] = useState(false)
-  const [loginMessage, setLoginMessage] = useState('')
+  const [showPassword, setShowPassword] = useState(false);
+  const [loginMessage, setLoginMessage] = useState("");
 
   async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    setLoginMessage('Inathibitisha taarifa...')
-    const formData = new FormData(event.currentTarget)
+    event.preventDefault();
+    setLoginMessage("Inathibitisha taarifa...");
+    const formData = new FormData(event.currentTarget);
 
     try {
       const { ok, data } = await apiPost<{ user: User; message?: string }>(
-        '/api/auth/login',
+        "/api/auth/login",
         {
-          identifier: formData.get('identifier'),
-          password: formData.get('password'),
+          identifier: formData.get("identifier"),
+          password: formData.get("password"),
         },
-      )
+      );
       if (ok) {
-        saveSession(data.user)
-        onLoggedIn(data.user)
+        saveSession(data.user);
+        onLoggedIn(data.user);
       } else {
-        setLoginMessage(data.message ?? 'Taarifa za kuingia si sahihi.')
+        setLoginMessage(data.message ?? "Taarifa za kuingia si sahihi.");
       }
     } catch {
-      setLoginMessage('API haipatikani. Hakikisha server imeanzishwa.')
+      setLoginMessage("API haipatikani. Hakikisha server imeanzishwa.");
     }
   }
 
@@ -64,11 +64,14 @@ export function LoginModal({
             <input
               name="password"
               required
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               placeholder="Weka nenosiri lako"
             />
-            <button type="button" onClick={() => setShowPassword(!showPassword)}>
-              {showPassword ? 'Ficha' : 'Onyesha'}
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? "Ficha" : "Onyesha"}
             </button>
           </div>
         </label>
@@ -84,9 +87,6 @@ export function LoginModal({
       <button className="forgot-link reset-link" onClick={onForgotPassword}>
         Umesahau nenosiri?
       </button>
-      <button className="modal-switch" onClick={onSwitchToRegister}>
-        Huna akaunti? Jisajili
-      </button>
     </Modal>
-  )
+  );
 }

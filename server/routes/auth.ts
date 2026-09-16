@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import bcrypt from 'bcryptjs'
 import { pool } from '../db.js'
-import { mailer, isSmtpConfigured } from '../lib/mailer.js'
+import { sendMailViaPhp, isSmtpConfigured } from '../lib/mailer.js'
 import { normalizePhone } from '../lib/phone.js'
 import { createResetCode } from '../lib/reset-code.js'
 
@@ -122,11 +122,10 @@ authRouter.post('/api/auth/forgot-password', async (request, response) => {
     const code = createResetCode()
     await pool.execute('DELETE FROM reset_code WHERE userid = ?', [user.idusers])
     await pool.execute('INSERT INTO reset_code (userid, code, time) VALUES (?, ?, ?)', [user.idusers, code, new Date()])
-    await mailer.sendMail({
-      from: process.env.SMTP_FROM ?? process.env.SMTP_USER,
+    await sendMailViaPhp({
       to: email,
       subject: 'ElimuBora password reset code',
-      text: `Code yako ya kubadili password ni: ${code}. Itumie ndani ya dakika 15.`,
+      body: `Code yako ya kubadili password ni: ${code}. Itumie ndani ya dakika 15.`,
     })
     response.json({ message: 'Code imetumwa kwenye email yako.' })
   } catch (error) {
