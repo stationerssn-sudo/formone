@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import "../styles/admin.css";
 import { apiGet, apiPost } from "../lib/api";
+import { useInstitutionName } from "../lib/useInstitutionName";
 import type { Institution, Notice } from "../types";
 
 export function AdminPage() {
+  const institutionName = useInstitutionName();
   const [institutions, setInstitutions] = useState<Institution[]>([]);
   const [institutionNotice, setInstitutionNotice] = useState<Notice>(null);
   const [batchNotice, setBatchNotice] = useState<Notice>(null);
@@ -55,7 +57,9 @@ export function AdminPage() {
     <main className="admin-page">
       <header className="admin-page-header">
         <div>
-          <span className="admin-kicker">ELIMUBORA CONTROL CENTER</span>
+          <span className="admin-kicker">
+            {institutionName.toUpperCase()} CONTROL CENTER
+          </span>
           <h1>Usimamizi wa mfumo</h1>
           <p>Sajili taasisi, vipindi vya masomo na watumiaji wa portal.</p>
         </div>
