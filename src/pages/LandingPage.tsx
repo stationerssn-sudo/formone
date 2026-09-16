@@ -1,43 +1,45 @@
-import { useEffect, useState } from 'react'
-import { Brand } from '../components/Brand'
-import { Footer } from '../components/Footer'
-import { LoginModal } from '../features/auth/LoginModal'
-import { RegisterModal } from '../features/auth/RegisterModal'
-import { ResetPasswordModal } from '../features/auth/ResetPasswordModal'
-import { apiGet } from '../lib/api'
-import type { Batch, Language, User } from '../types'
+import { useEffect, useState } from "react";
+import { Brand } from "../components/Brand";
+import { Footer } from "../components/Footer";
+import { LoginModal } from "../features/auth/LoginModal";
+import { RegisterModal } from "../features/auth/RegisterModal";
+import { ResetPasswordModal } from "../features/auth/ResetPasswordModal";
+import { apiGet } from "../lib/api";
+import type { Batch, Language, User } from "../types";
 
 type LandingPageProps = {
-  onLoggedIn: (user: User) => void
-}
+  onLoggedIn: (user: User) => void;
+};
 
 function getWeeksInBatch(batch: Batch): number | null {
-  const start = new Date(`${batch.starts.slice(0, 10)}T00:00:00`)
-  const end = new Date(`${batch.ends.slice(0, 10)}T00:00:00`)
-  const durationInDays = (end.getTime() - start.getTime()) / 86_400_000
+  const start = new Date(`${batch.starts.slice(0, 10)}T00:00:00`);
+  const end = new Date(`${batch.ends.slice(0, 10)}T00:00:00`);
+  const durationInDays = (end.getTime() - start.getTime()) / 86_400_000;
 
-  if (!Number.isFinite(durationInDays) || durationInDays <= 0) return null
+  if (!Number.isFinite(durationInDays) || durationInDays <= 0) return null;
 
-  return Math.ceil(durationInDays / 7)
+  return Math.ceil(durationInDays / 7);
 }
 
 export function LandingPage({ onLoggedIn }: LandingPageProps) {
-  const [isLoginOpen, setIsLoginOpen] = useState(false)
-  const [isRegisterOpen, setIsRegisterOpen] = useState(false)
-  const [isResetOpen, setIsResetOpen] = useState(false)
-  const [language, setLanguage] = useState<Language>('SW')
-  const [programmeWeeks, setProgrammeWeeks] = useState<number | null>(null)
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+  const [isResetOpen, setIsResetOpen] = useState(false);
+  const [language, setLanguage] = useState<Language>("SW");
+  const [programmeWeeks, setProgrammeWeeks] = useState<number | null>(null);
 
   useEffect(() => {
-    const currentYear = new Date().getFullYear()
+    const currentYear = new Date().getFullYear();
 
-    apiGet<Batch[]>('/api/batch')
+    apiGet<Batch[]>("/api/batch")
       .then((batches) => {
-        const currentBatch = batches.find((batch) => Number(batch.year) === currentYear)
-        setProgrammeWeeks(currentBatch ? getWeeksInBatch(currentBatch) : null)
+        const currentBatch = batches.find(
+          (batch) => Number(batch.year) === currentYear,
+        );
+        setProgrammeWeeks(currentBatch ? getWeeksInBatch(currentBatch) : null);
       })
-      .catch(() => setProgrammeWeeks(null))
-  }, [])
+      .catch(() => setProgrammeWeeks(null));
+  }, []);
 
   return (
     <div className="site-shell">
@@ -46,19 +48,22 @@ export function LandingPage({ onLoggedIn }: LandingPageProps) {
         <div className="top-actions">
           <div className="language-switch">
             <button
-              className={language === 'SW' ? 'active' : ''}
-              onClick={() => setLanguage('SW')}
+              className={language === "SW" ? "active" : ""}
+              onClick={() => setLanguage("SW")}
             >
               SW
             </button>
             <button
-              className={language === 'EN' ? 'active' : ''}
-              onClick={() => setLanguage('EN')}
+              className={language === "EN" ? "active" : ""}
+              onClick={() => setLanguage("EN")}
             >
               EN
             </button>
           </div>
-          <button className="login-link" onClick={() => setIsRegisterOpen(true)}>
+          <button
+            className="login-link"
+            onClick={() => setIsRegisterOpen(true)}
+          >
             Jisajili <span>↓</span>
           </button>
         </div>
@@ -67,10 +72,10 @@ export function LandingPage({ onLoggedIn }: LandingPageProps) {
         <section className="hero" id="program">
           <div className="hero-copy">
             <div className="eyebrow">
-              <span className="live-dot" /> Usajili wa 2025/2026 umefunguliwa
+              <span className="live-dot" /> Usajili wa 2026 umefunguliwa
             </div>
             <h1>
-              {language === 'SW' ? (
+              {language === "SW" ? (
                 <>
                   Msingi imara wa kuingia <em>Kidato cha Kwanza.</em>
                 </>
@@ -81,13 +86,13 @@ export function LandingPage({ onLoggedIn }: LandingPageProps) {
               )}
             </h1>
             <p>
-              {language === 'SW'
+              {language === "SW"
                 ? programmeWeeks
                   ? `Programu ya wiki ${programmeWeeks} inayowasaidia wanafunzi wa darasa la saba kuvuka kwa kujiamini kutoka msingi kwenda sekondari.`
-                  : 'Programu ya maandalizi inayowasaidia wanafunzi wa darasa la saba kuvuka kwa kujiamini kutoka msingi kwenda sekondari.'
+                  : "Programu ya maandalizi inayowasaidia wanafunzi wa darasa la saba kuvuka kwa kujiamini kutoka msingi kwenda sekondari."
                 : programmeWeeks
                   ? `A ${programmeWeeks}-week transition programme helping Standard Seven learners move into secondary school with confidence.`
-                  : 'A transition programme helping Standard Seven learners move into secondary school with confidence.'}
+                  : "A transition programme helping Standard Seven learners move into secondary school with confidence."}
             </p>
             <div className="hero-actions">
               <button
@@ -96,13 +101,12 @@ export function LandingPage({ onLoggedIn }: LandingPageProps) {
               >
                 Ingia kwenye mfumo <span>→</span>
               </button>
-              <a className="button button-quiet" href="#masomo">
-                Tazama masomo <span>→</span>
-              </a>
             </div>
             <div className="trust-row">
               <span>✓ Walimu mahiri</span>
-              {programmeWeeks && <span>✓ Wiki {programmeWeeks} za maandalizi</span>}
+              {programmeWeeks && (
+                <span>✓ Wiki {programmeWeeks} za maandalizi</span>
+              )}
               <span>✓ Ripoti ya maendeleo</span>
             </div>
           </div>
@@ -114,12 +118,12 @@ export function LandingPage({ onLoggedIn }: LandingPageProps) {
           onClose={() => setIsLoginOpen(false)}
           onLoggedIn={onLoggedIn}
           onForgotPassword={() => {
-            setIsLoginOpen(false)
-            setIsResetOpen(true)
+            setIsLoginOpen(false);
+            setIsResetOpen(true);
           }}
           onSwitchToRegister={() => {
-            setIsLoginOpen(false)
-            setIsRegisterOpen(true)
+            setIsLoginOpen(false);
+            setIsRegisterOpen(true);
           }}
         />
       )}
@@ -127,8 +131,8 @@ export function LandingPage({ onLoggedIn }: LandingPageProps) {
         <ResetPasswordModal
           onClose={() => setIsResetOpen(false)}
           onBackToLogin={() => {
-            setIsResetOpen(false)
-            setIsLoginOpen(true)
+            setIsResetOpen(false);
+            setIsLoginOpen(true);
           }}
         />
       )}
@@ -136,11 +140,11 @@ export function LandingPage({ onLoggedIn }: LandingPageProps) {
         <RegisterModal
           onClose={() => setIsRegisterOpen(false)}
           onSwitchToLogin={() => {
-            setIsRegisterOpen(false)
-            setIsLoginOpen(true)
+            setIsRegisterOpen(false);
+            setIsLoginOpen(true);
           }}
         />
       )}
     </div>
-  )
+  );
 }
