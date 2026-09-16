@@ -1,24 +1,24 @@
-import { useEffect, useState } from 'react'
-import '../styles/admin.css'
-import { apiGet, apiPost } from '../lib/api'
-import type { Institution, Notice } from '../types'
+import { useEffect, useState } from "react";
+import "../styles/admin.css";
+import { apiGet, apiPost } from "../lib/api";
+import type { Institution, Notice } from "../types";
 
 export function AdminPage() {
-  const [institutions, setInstitutions] = useState<Institution[]>([])
-  const [institutionNotice, setInstitutionNotice] = useState<Notice>(null)
-  const [batchNotice, setBatchNotice] = useState<Notice>(null)
-  const [userNotice, setUserNotice] = useState<Notice>(null)
+  const [institutions, setInstitutions] = useState<Institution[]>([]);
+  const [institutionNotice, setInstitutionNotice] = useState<Notice>(null);
+  const [batchNotice, setBatchNotice] = useState<Notice>(null);
+  const [userNotice, setUserNotice] = useState<Notice>(null);
 
   useEffect(() => {
-    apiGet<Institution[]>('/api/taasisi')
+    apiGet<Institution[]>("/api/taasisi")
       .then(setInstitutions)
       .catch(() =>
         setInstitutionNotice({
-          kind: 'error',
-          text: 'Imeshindikana kupakia taasisi.',
+          kind: "error",
+          text: "Imeshindikana kupakia taasisi.",
         }),
-      )
-  }, [])
+      );
+  }, []);
 
   async function submitForm(
     event: React.FormEvent<HTMLFormElement>,
@@ -26,29 +26,29 @@ export function AdminPage() {
     setNotice: (notice: Notice) => void,
     onSuccess?: () => void,
   ) {
-    event.preventDefault()
-    setNotice({ kind: 'success', text: 'Inahifadhi taarifa...' })
-    const form = event.currentTarget
+    event.preventDefault();
+    setNotice({ kind: "success", text: "Inahifadhi taarifa..." });
+    const form = event.currentTarget;
     try {
       const { ok, data } = await apiPost<{ message: string }>(
         endpoint,
         Object.fromEntries(new FormData(form).entries()),
-      )
-      if (!ok) throw new Error(data.message)
-      setNotice({ kind: 'success', text: data.message })
-      form.reset()
-      onSuccess?.()
+      );
+      if (!ok) throw new Error(data.message);
+      setNotice({ kind: "success", text: data.message });
+      form.reset();
+      onSuccess?.();
     } catch (error) {
       setNotice({
-        kind: 'error',
+        kind: "error",
         text:
-          error instanceof Error ? error.message : 'Taarifa hazijahifadhiwa.',
-      })
+          error instanceof Error ? error.message : "Taarifa hazijahifadhiwa.",
+      });
     }
   }
 
   async function reloadInstitutions() {
-    setInstitutions(await apiGet<Institution[]>('/api/taasisi'))
+    setInstitutions(await apiGet<Institution[]>("/api/taasisi"));
   }
 
   return (
@@ -74,7 +74,7 @@ export function AdminPage() {
             onSubmit={(event) =>
               submitForm(
                 event,
-                '/api/taasisi',
+                "/api/taasisi",
                 setInstitutionNotice,
                 reloadInstitutions,
               )
@@ -105,7 +105,9 @@ export function AdminPage() {
             <p>Weka kundi jipya la wanafunzi na ada zake.</p>
           </div>
           <form
-            onSubmit={(event) => submitForm(event, '/api/batch', setBatchNotice)}
+            onSubmit={(event) =>
+              submitForm(event, "/api/batch", setBatchNotice)
+            }
           >
             <label>
               Taasisi
@@ -114,7 +116,10 @@ export function AdminPage() {
                   Choose Institution
                 </option>
                 {institutions.map((institution) => (
-                  <option value={institution.idtaasisi} key={institution.idtaasisi}>
+                  <option
+                    value={institution.idtaasisi}
+                    key={institution.idtaasisi}
+                  >
                     {institution.taasisi_name}
                   </option>
                 ))}
@@ -159,7 +164,9 @@ export function AdminPage() {
             </button>
           </form>
           {batchNotice && (
-            <p className={`admin-notice ${batchNotice.kind}`}>{batchNotice.text}</p>
+            <p className={`admin-notice ${batchNotice.kind}`}>
+              {batchNotice.text}
+            </p>
           )}
         </article>
         <article className="admin-card">
@@ -169,7 +176,7 @@ export function AdminPage() {
             <p>Fungua akaunti ya mhasibu au mwalimu.</p>
           </div>
           <form
-            onSubmit={(event) => submitForm(event, '/api/users', setUserNotice)}
+            onSubmit={(event) => submitForm(event, "/api/users", setUserNotice)}
           >
             <label>
               Jina kamili
@@ -185,6 +192,7 @@ export function AdminPage() {
                   <option value="Mhasibu">Mhasibu</option>
                   <option value="Mwalimu">Mwalimu</option>
                   <option value="Treasurer">Treasurer</option>
+                  <option value="Academic">Academic</option>
                 </select>
               </label>
               <label>
@@ -194,7 +202,12 @@ export function AdminPage() {
             </div>
             <label>
               Barua pepe
-              <input name="email" required type="email" placeholder="juma@example.com" />
+              <input
+                name="email"
+                required
+                type="email"
+                placeholder="juma@example.com"
+              />
             </label>
             <label>
               Taasisi
@@ -203,7 +216,10 @@ export function AdminPage() {
                   Choose Institution
                 </option>
                 {institutions.map((institution) => (
-                  <option value={institution.idtaasisi} key={institution.idtaasisi}>
+                  <option
+                    value={institution.idtaasisi}
+                    key={institution.idtaasisi}
+                  >
                     {institution.taasisi_name}
                   </option>
                 ))}
@@ -224,12 +240,14 @@ export function AdminPage() {
             </button>
           </form>
           {userNotice && (
-            <p className={`admin-notice ${userNotice.kind}`}>{userNotice.text}</p>
+            <p className={`admin-notice ${userNotice.kind}`}>
+              {userNotice.text}
+            </p>
           )}
         </article>
       </section>
     </main>
-  )
+  );
 }
 
-export default AdminPage
+export default AdminPage;
