@@ -131,7 +131,10 @@ authRouter.post('/api/auth/forgot-password', async (request, response) => {
     response.json({ message: 'Code imetumwa kwenye email yako.' })
   } catch (error) {
     console.error('Forgot password error:', error)
-    response.status(500).json({ message: 'Imeshindikana kutuma code. Hakikisha email server imewekwa.' })
+    const detail = error instanceof Error ? error.message : String(error)
+    response.status(500).json({
+      message: `Imeshindikana kutuma code: ${detail}`,
+    })
   }
 })
 
