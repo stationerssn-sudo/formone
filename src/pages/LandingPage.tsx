@@ -60,12 +60,6 @@ export function LandingPage({ onLoggedIn }: LandingPageProps) {
               EN
             </button>
           </div>
-          <button
-            className="login-link"
-            onClick={() => setIsRegisterOpen(true)}
-          >
-            Jisajili <span>↓</span>
-          </button>
         </div>
       </header>
       <main id="top">
