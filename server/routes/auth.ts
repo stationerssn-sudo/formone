@@ -66,6 +66,21 @@ authRouter.post('/api/auth/register', async (request, response) => {
   }
 
   try {
+    // Angalia kwanza kama email au namba ya simu tayari zimesajiliwa
+    const [existing] = await pool.execute(
+      'SELECT email, phone FROM users WHERE email = ? OR phone = ? LIMIT 2',
+      [email, phone],
+    )
+    const duplicates = existing as Array<{ email: string; phone: string }>
+    if (duplicates.some((row) => row.email === email)) {
+      response.status(409).json({ message: 'Mtumiaji ameshasajiliwa: barua pepe hii tayari inatumika.' })
+      return
+    }
+    if (duplicates.some((row) => normalizePhone(row.phone) === phone)) {
+      response.status(409).json({ message: 'Mtumiaji ameshasajiliwa: namba hii ya simu tayari inatumika.' })
+      return
+    }
+
     const passwordHash = await bcrypt.hash(password, 12)
     const [result] = await pool.execute(
       'INSERT INTO users (full_name, position, phone, email, password) VALUES (?, ?, ?, ?, ?)',
